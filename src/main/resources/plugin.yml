@@ -1,0 +1,36 @@
+name: LifeSteal
+version: 1.0
+author: UnleqitQ
+main: me.unleqitq.lifesteal.LifeSteal
+load: STARTUP
+desctiption: LifeSteal Plugin
+depend: []
+softdepend: [PlaceholderAPI]
+api-version: 1.17
+commands:
+  lssetHearts:
+    description: Sets LifeSteal Hearts of a player
+    permission: lifesteal.sethearts
+  lsgetHearts:
+    description: Returns LifeSteal Hearts of a player
+    permission: lifesteal.gethearts
+  lsgetHeartItem:
+    description: Gives a heart item
+    permission: lifesteal.getheartitem
+permissions:
+  lifesteal.*:
+    description: To use all the plugin's commands
+    children:
+      lifesteal.sethearts: true
+      lifesteal.gethearts: true
+      lifesteal.getheartitem: true
+  lifesteal.sethearts:
+    description: To set the Players Hearts
+    default: op
+  lifesteal.gethearts:
+    description: To get the Players Hearts
+  lifesteal.getheartitem:
+    description: To get the LifeSteal Heart-Item
+    default: op
+  lifesteal.bypass:
+    description: To not take part in LifeSteal
