@@ -1,10 +1,7 @@
 package me.unleqitq.lifesteal;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
@@ -104,10 +101,14 @@ public class Utils {
 		// // String.format("kick %s %s", player.getName(),
 		// // Configuration.getBanMessage().replace("%player%", killerName)));
 		// }
-		if (true) {
-			player.setGameMode(GameMode.SPECTATOR);
-			// player.setSpectatorTarget(killer);
-			// Configuration.addElimination(player, id);
+		player.setGameMode(GameMode.SPECTATOR);
+		// player.setSpectatorTarget(killer);
+		// Configuration.addElimination(player, id);
+	}
+	
+	public static void update(Player player) {
+		if (LifeSteal.plugin.dataTable.heartsMap.get(player.getUniqueId()) <= 0) {
+			eliminate(player);
 		}
 	}
 	

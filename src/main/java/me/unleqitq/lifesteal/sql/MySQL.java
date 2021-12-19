@@ -3,7 +3,6 @@ package me.unleqitq.lifesteal.sql;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.PreparedStatement;
 
 
 public class MySQL {
@@ -27,18 +26,15 @@ public class MySQL {
 	
 	public void connect() throws ClassNotFoundException, SQLException {
 		if (!isConnected()) {
-			connection =
-				DriverManager.getConnection(
-					"jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=false",
-					username, password);
+			connection = DriverManager.getConnection(
+					"jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=false", username, password);
 		}
 	}
 	
 	public boolean isConnected() {
 		try {
 			return connection != null && !connection.isClosed();
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			return false;
 		}
 	}
@@ -48,8 +44,7 @@ public class MySQL {
 			try {
 				connection.close();
 				connection = null;
-			}
-			catch (SQLException ex) {
+			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
 		}

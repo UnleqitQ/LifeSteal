@@ -1,10 +1,7 @@
 package me.unleqitq.lifesteal;
 
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -58,16 +55,16 @@ public class LifeSteal extends JavaPlugin {
 		heartKey = new NamespacedKey(this, "ls_heart_item");
 		compressedDiamondKey = new NamespacedKey(this, "ls_compressed_diamond");
 		compressedDiamondKeyBack = new NamespacedKey(this, "ls_compressed_diamond_back");
-		ItemMeta itemMeta = heartItem.getItemMeta();
+		ItemMeta itemMeta = Objects.requireNonNull(heartItem.getItemMeta());
 		itemMeta.setCustomModelData(1001);
 		itemMeta.setDisplayName(ChatColor.RED + "Extra heart.");
-		itemMeta.setLore(Arrays.asList("Gives you an extra heart!"));
+		itemMeta.setLore(List.of("Gives you an extra heart!"));
 		itemMeta.setLocalizedName("ls_heart");
 		heartItem.setItemMeta(itemMeta);
-		itemMeta = compressedDiamondItem.getItemMeta();
+		itemMeta = Objects.requireNonNull(compressedDiamondItem.getItemMeta());
 		itemMeta.setCustomModelData(1001);
 		itemMeta.setDisplayName(ChatColor.AQUA + "Compressed Diamond");
-		itemMeta.setLore(Arrays.asList("An impossible compressed Diamond"));
+		itemMeta.setLore(List.of("An impossible compressed Diamond"));
 		itemMeta.setLocalizedName("ls_compresssed_diamond");
 		compressedDiamondItem.setItemMeta(itemMeta);
 		// System.out.println("XXXXXXX");
@@ -87,8 +84,7 @@ public class LifeSteal extends JavaPlugin {
 		compressedDiamondRecipe.setIngredient('d', Material.DIAMOND);
 		compressedDiamondRecipe.setIngredient('D', Material.DIAMOND_BLOCK);
 		
-		compressedDiamondRecipeBack =
-				new ShapedRecipe(compressedDiamondKeyBack, new ItemStack(Material.DIAMOND, 13));
+		compressedDiamondRecipeBack = new ShapedRecipe(compressedDiamondKeyBack, new ItemStack(Material.DIAMOND, 13));
 		compressedDiamondRecipeBack.shape("d");
 		compressedDiamondRecipeBack.setIngredient('d', new ExactChoice(compressedDiamondItem));
 		
@@ -96,8 +92,7 @@ public class LifeSteal extends JavaPlugin {
 		Bukkit.addRecipe(compressedDiamondRecipeBack);
 		Bukkit.addRecipe(heartRecipe);
 		
-		sql = new MySQL(configuration.mysqlHost, configuration.mysqlPort,
-				configuration.mysqlUsername,
+		sql = new MySQL(configuration.mysqlHost, configuration.mysqlPort, configuration.mysqlUsername,
 				configuration.mysqlPassword, configuration.mysqlDatabase);
 		try {
 			sql.connect();
@@ -112,22 +107,16 @@ public class LifeSteal extends JavaPlugin {
 			(new Papi(this)).register();
 		}
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-			for (UUID id : deadPlayers) {
-				Player player = Bukkit.getPlayer(id);
-				if (player == null)
-					continue;
-			}
-		}, 0, 10);
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-			for (UUID uuid : updatePlayers.keySet()) {
-				if (Bukkit.getOfflinePlayer(uuid).isOnline()) {
-					dataTable.updatePlayer(Bukkit.getPlayer(uuid));
+			for (Player player : Bukkit.getOnlinePlayers()) {
+				if (updatePlayers.containsKey(player.getUniqueId())) {
+					dataTable.updatePlayer(player);
 				}
 				else {
 					// Bukkit.getLogger().info("[LifeSteal] Remove player with
 					// uuid " + uuid);
-					updatePlayers.remove(uuid);
+					updatePlayers.remove(player.getUniqueId());
 				}
+				Utils.update(player);
 			}
 		}, 0, 5);
 		for (Player player : Bukkit.getOnlinePlayers()) {
@@ -155,7 +144,7 @@ public class LifeSteal extends JavaPlugin {
 	}
 	
 	public <T extends CommandExecutor> void registerCommand(String cmd, T handler) {
-		getCommand(cmd).setExecutor((CommandExecutor) handler);
+		Objects.requireNonNull(getCommand(cmd)).setExecutor(handler);
 	}
 	
 	public static boolean takesPart(CommandSender sender) {

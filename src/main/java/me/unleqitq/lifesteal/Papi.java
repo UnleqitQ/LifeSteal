@@ -1,16 +1,8 @@
 package me.unleqitq.lifesteal;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 
 public class Papi extends PlaceholderExpansion {
@@ -29,20 +21,22 @@ public class Papi extends PlaceholderExpansion {
 		return true;
 	}
 	
-	public String getAuthor() {
+	public @NotNull String getAuthor() {
 		return this.plugin.getDescription().getAuthors().toString();
 	}
 	
-	public String getIdentifier() {
+	public @NotNull String getIdentifier() {
 		return "lifesteal";
 	}
 	
-	public String getVersion() {
+	public @NotNull String getVersion() {
 		return this.plugin.getDescription().getVersion();
 	}
 	
-	public String onPlaceholderRequest(Player player, String identifier) {
-		if (player == null) { return null; }
+	public String onPlaceholderRequest(Player player, @NotNull String identifier) {
+		if (player == null) {
+			return null;
+		}
 		identifier = identifier.toLowerCase();
 		
 		if (identifier.contains("hearts")) {
