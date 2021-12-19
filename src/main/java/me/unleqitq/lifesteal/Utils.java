@@ -1,7 +1,9 @@
 package me.unleqitq.lifesteal;
 
 import java.util.UUID;
+import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
@@ -102,6 +104,7 @@ public class Utils {
 		// // Configuration.getBanMessage().replace("%player%", killerName)));
 		// }
 		player.setGameMode(GameMode.SPECTATOR);
+		Bukkit.getLogger().log(Level.WARNING, player.getGameMode().name());
 		// player.setSpectatorTarget(killer);
 		// Configuration.addElimination(player, id);
 	}
