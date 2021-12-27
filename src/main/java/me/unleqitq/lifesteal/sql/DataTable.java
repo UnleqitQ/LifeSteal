@@ -1,5 +1,11 @@
 package me.unleqitq.lifesteal.sql;
 
+import me.unleqitq.lifesteal.LifeSteal;
+import org.bukkit.BanList;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,13 +13,6 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
-
-import org.bukkit.BanList;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import me.unleqitq.lifesteal.LifeSteal;
-import org.jetbrains.annotations.NotNull;
 
 
 public class DataTable {
@@ -48,7 +47,17 @@ public class DataTable {
 				healthMap.put(id, health);
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
+			if (!sql.isConnected()) {
+				try {
+					sql.disconnect();
+				} catch (Exception e) {
+				}
+				try {
+					sql.connect();
+				} catch (Exception e) {
+				}
+			}
 		}
 		Bukkit.getLogger().info("[LifeSteal] " + "=".repeat(100));
 	}
@@ -64,7 +73,17 @@ public class DataTable {
 					"INSERT INTO `playerdata` (`UUID`, `Hearts`, `Eliminated`) VALUES ('" + player.getUniqueId() + "', '10', '0') ");
 			statement.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
+			if (!sql.isConnected()) {
+				try {
+					sql.disconnect();
+				} catch (Exception e) {
+				}
+				try {
+					sql.connect();
+				} catch (Exception e) {
+				}
+			}
 		}
 		try {
 			PreparedStatement statement = sql.getConnection().prepareStatement(
@@ -81,7 +100,17 @@ public class DataTable {
 				healthMap.put(id, health);
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
+			if (!sql.isConnected()) {
+				try {
+					sql.disconnect();
+				} catch (Exception e) {
+				}
+				try {
+					sql.connect();
+				} catch (Exception e) {
+				}
+			}
 		}
 		player.setHealthScaled(false);
 		// Bukkit.getLogger().info("[LifeSteal] " + "Player added");
@@ -97,7 +126,17 @@ public class DataTable {
 					"INSERT INTO `playerdata` (`UUID`, `Hearts`, `Eliminated`) VALUES ('" + player + "', '10', '0') ");
 			statement.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
+			if (!sql.isConnected()) {
+				try {
+					sql.disconnect();
+				} catch (Exception e) {
+				}
+				try {
+					sql.connect();
+				} catch (Exception e) {
+				}
+			}
 		}
 		try {
 			PreparedStatement statement = sql.getConnection().prepareStatement(
@@ -112,7 +151,17 @@ public class DataTable {
 				eliminatedMap.put(id, eliminated);
 			}
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
+			if (!sql.isConnected()) {
+				try {
+					sql.disconnect();
+				} catch (Exception e) {
+				}
+				try {
+					sql.connect();
+				} catch (Exception e) {
+				}
+			}
 		}
 		// Bukkit.getLogger().info("[LifeSteal] " + "Player added");
 	}
@@ -132,7 +181,17 @@ public class DataTable {
 					"UPDATE `playerdata` SET `Hearts`='" + hearts + "', `Health`='" + player.getHealth() + "', `Eliminated`='" + (eliminated ? "1" : "0") + "' WHERE `UUID`='" + player.getUniqueId() + "'");
 			statement.executeUpdate();
 		} catch (SQLException ex) {
-			// ex.printStackTrace();
+			//ex.printStackTrace();
+			if (!sql.isConnected()) {
+				try {
+					sql.disconnect();
+				} catch (Exception e) {
+				}
+				try {
+					sql.connect();
+				} catch (Exception e) {
+				}
+			}
 		}
 		heartsMap.put(player.getUniqueId(), hearts);
 		healthMap.put(player.getUniqueId(), player.getHealth());
@@ -157,7 +216,17 @@ public class DataTable {
 							player.getUniqueId()) ? 1 : 0) + "' WHERE `UUID`='" + player.getUniqueId() + "'");
 			statement.executeUpdate();
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
+			if (!sql.isConnected()) {
+				try {
+					sql.disconnect();
+				} catch (Exception e) {
+				}
+				try {
+					sql.connect();
+				} catch (Exception e) {
+				}
+			}
 		}
 		// healthMap.put(Main.plugin.idTable.playerIdMap.get(player.getUniqueId()),
 		// (float) player.getHealth());
@@ -209,7 +278,17 @@ public class DataTable {
 					"CREATE TABLE `playerdata` ( `UUID` VARCHAR(100) NOT NULL , `Hearts` DOUBLE NOT NULL , `Health` DOUBLE , `Eliminated` BOOL NOT NULL , PRIMARY KEY (`UUID`)) ENGINE = InnoDB; ");
 			statement.executeUpdate();
 		} catch (SQLException ex) {
-			// ex.printStackTrace();
+			//ex.printStackTrace();
+			if (!sql.isConnected()) {
+				try {
+					sql.disconnect();
+				} catch (Exception e) {
+				}
+				try {
+					sql.connect();
+				} catch (Exception e) {
+				}
+			}
 		}
 	}
 	
