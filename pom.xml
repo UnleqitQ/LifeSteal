@@ -6,7 +6,7 @@
 
     <groupId>me.unleqitq</groupId>
     <artifactId>lifesteal</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
     <packaging>jar</packaging>
 
     <name>Lifesteal</name>
@@ -45,7 +45,7 @@
             </plugin>
         </plugins>
 
-        <finalName>${project.name}_v${project.version}</finalName>
+        <finalName>${project.name}</finalName>
         <!--plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
