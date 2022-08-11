@@ -7,12 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class Papi extends PlaceholderExpansion {
 	
-	private LifeSteal plugin;
-	
-	public Papi(LifeSteal plugin) {
-		this.plugin = plugin;
-	}
-	
 	public boolean persist() {
 		return true;
 	}
@@ -22,7 +16,7 @@ public class Papi extends PlaceholderExpansion {
 	}
 	
 	public @NotNull String getAuthor() {
-		return this.plugin.getDescription().getAuthors().toString();
+		return LifeSteal.getInstance().getDescription().getAuthors().toString();
 	}
 	
 	public @NotNull String getIdentifier() {
@@ -30,28 +24,15 @@ public class Papi extends PlaceholderExpansion {
 	}
 	
 	public @NotNull String getVersion() {
-		return this.plugin.getDescription().getVersion();
+		return LifeSteal.getInstance().getDescription().getVersion();
 	}
 	
 	public String onPlaceholderRequest(Player player, @NotNull String identifier) {
-		if (player == null) {
-			return null;
+		if (identifier.equalsIgnoreCase("hearts")) {
+			return String.valueOf(LifeSteal.getHearts(player.getUniqueId()));
 		}
-		identifier = identifier.toLowerCase();
-		
-		if (identifier.contains("hearts")) {
-			return Double.toString(plugin.dataTable.heartsMap.get(player.getUniqueId()));
-		}
-		
-		return "0";
+		return "";
 	}
 	
 }
 
-
-/*
- * Location:
- * C:\Users\quent.DESKTOP-L0VD1RP\Downloads\AmongUs.jar!\com\nktfh100\AmongUs\
- * main\SomeExpansion.class Java compiler version: 8 (52.0) JD-Core Version:
- * 1.1.3
- */
