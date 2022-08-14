@@ -11,13 +11,16 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onDeath(PlayerDeathEvent event) {
 		Player killer = event.getEntity().getKiller();
-		if (killer != null) {
-			LifeSteal.setHearts(killer.getUniqueId(), LifeSteal.getHearts(killer.getUniqueId()) + 1);
-			LifeSteal.updatePlayer(killer);
+		int hearts = LifeSteal.getHearts(event.getEntity().getUniqueId());
+		if (hearts > 0) {
+			LifeSteal.setHearts(event.getEntity().getUniqueId(), hearts - 1);
+			if (killer != null) {
+				LifeSteal.setHearts(killer.getUniqueId(), LifeSteal.getHearts(killer.getUniqueId()) + 1);
+				LifeSteal.updatePlayer(killer);
+			}
+			LifeSteal.updatePlayer(event.getEntity());
 		}
-		LifeSteal.setHearts(event.getEntity().getUniqueId(), LifeSteal.getHearts(event.getEntity().getUniqueId()) - 1);
-		LifeSteal.updatePlayer(event.getEntity());
-		if (LifeSteal.getHearts(event.getEntity().getUniqueId()) <= 0) {
+		if (hearts <= 1) {
 			event.getEntity().kickPlayer("§6You have no hearts left!");
 		}
 	}
@@ -26,7 +29,9 @@ public class PlayerListener implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		if (LifeSteal.getHearts(event.getPlayer().getUniqueId()) <= 0) {
 			event.getPlayer().kickPlayer("§6You have no hearts left!");
-			
+		}
+		else {
+			LifeSteal.updatePlayer(event.getPlayer());
 		}
 	}
 	

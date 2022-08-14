@@ -2,12 +2,13 @@ package me.unleqitq.lifesteal;
 
 import me.unleqitq.commandframework.CommandManager;
 import me.unleqitq.commandframework.building.argument.IntegerArgument;
-import me.unleqitq.commandframework.building.argument.PlayerArgument;
+import me.unleqitq.commandframework.building.argument.OfflinePlayerArgument;
 import me.unleqitq.commandframework.building.command.FrameworkCommand;
 import me.unleqitq.lifesteal.storage.FileStorage;
 import me.unleqitq.lifesteal.storage.IStorage;
 import me.unleqitq.lifesteal.storage.MySQL;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -62,35 +63,37 @@ public class LifeSteal extends JavaPlugin {
 	private void registerCommands() {
 		FrameworkCommand.Builder<CommandSender> topBuilder = FrameworkCommand.commandBuilder("lifesteal");
 		commandManager.register(
-				topBuilder.subCommand("set").permission("lifesteal.set").argument(PlayerArgument.of("player"))
+				topBuilder.subCommand("set").permission("lifesteal.set").argument(OfflinePlayerArgument.of("player"))
 						.argument(IntegerArgument.of("hearts")).handler(c -> {
 							CommandSender sender = c.getSender();
-							Player p = c.get("player");
+							OfflinePlayer p = c.get("player");
 							int hearts = c.get("hearts");
 							storage.setHearts(p.getUniqueId(), hearts);
 							storage.save();
-							updatePlayer(p);
+							if (p.isOnline())
+								updatePlayer(p.getPlayer());
 							sender.sendMessage(p.getName() + " now has " + hearts + " hearts");
 							return true;
 						}));
 		commandManager.register(
-				topBuilder.subCommand("add").permission("lifesteal.set").argument(PlayerArgument.of("player"))
+				topBuilder.subCommand("add").permission("lifesteal.set").argument(OfflinePlayerArgument.of("player"))
 						.argument(IntegerArgument.of("amount")).handler(c -> {
 							CommandSender sender = c.getSender();
-							Player p = c.get("player");
+							OfflinePlayer p = c.get("player");
 							int amount = c.get("amount");
 							int hearts = storage.getHearts(p.getUniqueId()) + amount;
 							storage.setHearts(p.getUniqueId(), hearts);
 							storage.save();
-							updatePlayer(p);
+							if (p.isOnline())
+								updatePlayer(p.getPlayer());
 							sender.sendMessage(p.getName() + " now has " + hearts + " hearts");
 							return true;
 						}));
 		commandManager.register(
-				topBuilder.subCommand("get").permission("lifesteal.get").argument(PlayerArgument.of("player"))
+				topBuilder.subCommand("get").permission("lifesteal.get").argument(OfflinePlayerArgument.of("player"))
 						.handler(c -> {
 							CommandSender sender = c.getSender();
-							Player p = c.get("player");
+							OfflinePlayer p = c.get("player");
 							int hearts = storage.getHearts(p.getUniqueId());
 							sender.sendMessage(p.getName() + " has " + hearts + " hearts");
 							return true;
