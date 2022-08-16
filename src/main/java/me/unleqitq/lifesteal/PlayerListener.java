@@ -23,6 +23,7 @@ public class PlayerListener implements Listener {
 		if (hearts <= 1) {
 			event.getEntity().kickPlayer("§6You have no hearts left!");
 		}
+		LifeSteal.storage.save();
 	}
 	
 	@EventHandler

@@ -42,7 +42,8 @@ public class FileStorage implements IStorage {
 		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		while (buffer.readableBytes() > 0) {
+		int cnt = buffer.readShort();
+		for (int i = 0; i < cnt; i++) {
 			long msb = buffer.readLong();
 			long lsb = buffer.readLong();
 			int amount = buffer.readShort();
@@ -53,11 +54,14 @@ public class FileStorage implements IStorage {
 	@Override
 	public void save() {
 		ByteBuf buffer = Unpooled.buffer();
+		buffer.writeShort(dataMap.size());
 		for (Map.Entry<UUID, Integer> entry : dataMap.entrySet()) {
 			buffer.writeLong(entry.getKey().getMostSignificantBits());
 			buffer.writeLong(entry.getKey().getLeastSignificantBits());
 			buffer.writeShort(entry.getValue());
 		}
+		buffer.writeLong(0);
+		buffer.writeLong(0);
 		try {
 			Files.write(file.toPath(), buffer.array(), StandardOpenOption.CREATE, StandardOpenOption.WRITE,
 					StandardOpenOption.TRUNCATE_EXISTING);

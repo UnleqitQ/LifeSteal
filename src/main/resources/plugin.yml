@@ -4,5 +4,7 @@ author: UnleqitQ
 main: me.unleqitq.lifesteal.LifeSteal
 desctiption: LifeSteal Plugin
 depend: []
-softdepend: [PlaceholderAPI]
+softdepend:
+  - PlaceholderAPI
+  - Plan
 api-version: 1.17

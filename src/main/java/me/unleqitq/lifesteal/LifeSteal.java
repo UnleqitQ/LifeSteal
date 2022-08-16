@@ -57,6 +57,9 @@ public class LifeSteal extends JavaPlugin {
 			papiHook = new Papi();
 			((Papi) papiHook).register();
 		}
+		if (Bukkit.getPluginManager().isPluginEnabled("Plan")) {
+			LifestealDataExtension.register();
+		}
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 	}
 	
@@ -105,6 +108,9 @@ public class LifeSteal extends JavaPlugin {
 		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI") && papiHook != null) {
 			((Papi) papiHook).unregister();
 		}
+		if (Bukkit.getPluginManager().isPluginEnabled("Plan")) {
+			LifestealDataExtension.unregister();
+		}
 		storage.disconnect();
 	}
 	
@@ -118,6 +124,7 @@ public class LifeSteal extends JavaPlugin {
 	
 	public static void setHearts(UUID player, int amount) {
 		storage.setHearts(player, amount);
+		updatePlan(player);
 	}
 	
 	public static void updatePlayer(Player player) {
@@ -133,6 +140,13 @@ public class LifeSteal extends JavaPlugin {
 		catch (IllegalArgumentException ignored) {
 		}
 		player.setHealthScaled(false);
+		updatePlan(player.getUniqueId());
+	}
+	
+	public static void updatePlan(UUID player) {
+		if (Bukkit.getPluginManager().isPluginEnabled("Plan")) {
+			LifestealDataExtension.update(player);
+		}
 	}
 	
 }
